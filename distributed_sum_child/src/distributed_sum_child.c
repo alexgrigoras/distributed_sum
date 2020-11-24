@@ -57,7 +57,7 @@ int main( int argc, char *argv[] ) {
 	printf("Worker %d - Spawned\n", myrank);
 
 	// Receive array dimension and threshold k
-	MPI_Bcast( nm_array, NR_WORKERS, MPI_INT, MPI_ROOT, parentcomm );
+	MPI_Bcast( nm_array, NR_WORKERS, MPI_INT, 0, parentcomm );
 	n = nm_array[0];
 	k = nm_array[1];
 
@@ -65,7 +65,7 @@ int main( int argc, char *argv[] ) {
 	sum_array = malloc(sizeof(int));
 
 	// Receive array
-	MPI_Scatter(array, n, MPI_INT, array, n, MPI_INT, MPI_ROOT, parentcomm);
+	MPI_Scatter(array, n, MPI_INT, array, n, MPI_INT, 0, parentcomm);
 	printf("Final Worker %d: Receiving: ", myrank);
 	print_array(array, n, myrank);
 
