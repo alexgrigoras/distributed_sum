@@ -83,7 +83,7 @@ int main(int argc, char* argv[]){
 	print_array(array, m*n);
 
 	// Spawn workers
-	MPI_Comm_spawn( "hpc_project_child", MPI_ARGV_NULL, m, MPI_INFO_NULL, 0, MPI_COMM_WORLD, &workercomm, MPI_ERRCODES_IGNORE );
+	MPI_Comm_spawn( "distributed_sum_child", MPI_ARGV_NULL, m, MPI_INFO_NULL, 0, MPI_COMM_WORLD, &workercomm, MPI_ERRCODES_IGNORE );
 
 	// Send matrix dimensions to workers
 	MPI_Bcast(nm_array, 2, MPI_INT, myrank == 0 ? MPI_ROOT : MPI_PROC_NULL, workercomm);

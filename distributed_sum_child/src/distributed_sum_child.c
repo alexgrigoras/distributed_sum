@@ -83,7 +83,7 @@ int main( int argc, char *argv[] ) {
 		printf("Worker %d: Spawning other workers\n", myrank);
 
 		// Spawn workers
-		MPI_Comm_spawn( "hpc_project_child", MPI_ARGV_NULL, NR_WORKERS, MPI_INFO_NULL, 0, MPI_COMM_WORLD, &workercomm2, MPI_ERRCODES_IGNORE );
+		MPI_Comm_spawn( "distributed_sum_child", MPI_ARGV_NULL, NR_WORKERS, MPI_INFO_NULL, 0, MPI_COMM_WORLD, &workercomm2, MPI_ERRCODES_IGNORE );
 
 		nm_array[0] = n/2;
 
