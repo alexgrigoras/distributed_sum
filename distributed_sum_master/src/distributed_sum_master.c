@@ -47,27 +47,29 @@ int compute_sum(int *array, int n)
 }
 
 int main(int argc, char* argv[]){
-	int myrank, numworkers;
-	MPI_Comm workercomm;
+	int myrank;
 	int m, n, k;
 	int *array, *sub_array, *sum_array;
 	int sum = 0;
-	int nm_array[2];
+	int send_array[4];
+	MPI_Comm workercomm;
 	
 	if ( argc != 4 )
 	{
-		printf( "usage: %s <number of workers>\n", argv[0] );
+		printf( "Usage: %s <number of workers> <m> <n> <k>\n", argv[0] );
 		return 0;
 	}
 	else
 	{
-		m = atoi( argv[1] );
-		n = atoi( argv[2] );
-		k = atoi( argv[3] );
+		m = atoi(argv[1]);
+		n = atoi(argv[2]);
+		k = atoi(argv[3]);
 	}
 
-	nm_array[0] = n;
-	nm_array[1] = k;
+	send_array[0] = m;
+	send_array[1] = n;
+	send_array[2] = k;
+	send_array[3] = getpid();
 	array = malloc(m*n*sizeof(int));
 	sub_array = malloc(n*sizeof(int));
 	sum_array = malloc(m*sizeof(int));
@@ -78,7 +80,7 @@ int main(int argc, char* argv[]){
 	/* master process code */
 
 	// Create matrix as an array
-	printf("Master: m = %d n = %d\n", m, n);
+	printf("Master (%d): m = %d n = %d k = %d and nr: ", getpid(), m, n, k);
 	generate_array(array, m, n);
 	print_array(array, m*n);
 
@@ -86,7 +88,7 @@ int main(int argc, char* argv[]){
 	MPI_Comm_spawn( "distributed_sum_child", MPI_ARGV_NULL, m, MPI_INFO_NULL, 0, MPI_COMM_WORLD, &workercomm, MPI_ERRCODES_IGNORE );
 
 	// Send matrix dimensions to workers
-	MPI_Bcast(nm_array, 2, MPI_INT, myrank == 0 ? MPI_ROOT : MPI_PROC_NULL, workercomm);
+	MPI_Bcast(send_array, 4, MPI_INT, myrank == 0 ? MPI_ROOT : MPI_PROC_NULL, workercomm);
 
 	// Send matrix line to worker
 	MPI_Scatter(array, n, MPI_INT, sub_array, n, MPI_INT, myrank == 0 ? MPI_ROOT : MPI_PROC_NULL, workercomm);
@@ -98,7 +100,8 @@ int main(int argc, char* argv[]){
 	sum = compute_sum(sum_array, m);
 	printf("Master: Sum = %d\n", sum);
 
-	/* master process code */
+	/* end master process code */
+
 	MPI_Comm_free( &workercomm );
 
 	MPI_Finalize();
