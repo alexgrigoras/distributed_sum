@@ -1,7 +1,7 @@
 # Distributed sum
 
 ## Description
-Distributed application of computing the sum of a matri:
+Distributed application of computing the sum of a matrix:
 - Start with one root process (p0) and a matrix of integers of dimension m lines by n columns.
 - The matrix is dynamically generated using random numbers.
 - The m and n parameters are provided as program arguments.
@@ -18,6 +18,11 @@ Upon receiving the partial sum results, it sums them and sends the result back t
 
 ## Implementation
 Implemented in C using MPI.
+
+Run using the command (on Linux):
+```bash
+mpirun -np 1 distributed_sum_master [m] [n] [k]
+```
 
 ## License
 MIT License.
