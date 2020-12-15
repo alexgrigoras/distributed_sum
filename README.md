@@ -10,9 +10,9 @@ Distributed application of computing the sum of a matrix:
 corresponding line in the matrix (li) as an array of n elements. A child process, computes the sum for
 the input array and send it back to the parent process.
 - Depending on the size of the received array, a child process does the following:
- if the array size is less than k (ex: 1000) elements, the child process computes the sum by itself
+* if the array size is less than k (ex: 1000) elements, the child process computes the sum by itself
 and sends the result back to its parent;
- otherwise, the child process splits the array in half, spawns two children of its own (thus
+* otherwise, the child process splits the array in half, spawns two children of its own (thus
 becoming itself a parent), sends each half to the corresponding child and waits for the results.
 Upon receiving the partial sum results, it sums them and sends the result back to its parent.
 
@@ -21,7 +21,7 @@ Implemented in C using MPI.
 
 Run using the command (on Linux):
 ```bash
-mpirun -np 1 distributed_sum_master [m] [n] [k]
+mpirun -np 1 distributed_sum_master <m> <n> <k>
 ```
 
 ## License
