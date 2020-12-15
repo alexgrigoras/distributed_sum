@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
 	
 	if ( argc != 4 )
 	{
-		printf( "Usage: %s <number of workers> <m> <n> <k>\n", argv[0] );
+		printf( "Usage: %s <m> <n> <k>\n", argv[0] );
 		return 0;
 	}
 	else
